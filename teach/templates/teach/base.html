@@ -1,0 +1,166 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'teach-home' %}">KK MATHS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'teach-home' %}">Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Wyloguj się</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Logowanie</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Rejestracja</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Left Sidebar -->
+    <div class="bg-light p-3 sidebar">
+        <div class="accordion" id="accordionMath">
+            {% for grade in grades %}
+            <div class="accordion-item border-0 mb-2">
+                <h5 class="accordion-header" id="heading{{grade}}">
+                    <button class="accordion-button shadow-none bg-info text-white 
+                        {% block button_arrow %} collapsed" aria-expanded="false" {% endblock %}
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#collapse{{grade}}" 
+                        aria-controls="collapse{{grade}}">
+                        <i class="fas fa-graduation-cap me-2"></i> Klasa {{forloop.counter}}
+                    </button>
+                </h5>
+                <div id="collapse{{grade}}" class="accordion-collapse collapse {% block show_categories %}{% endblock %}" aria-labelledby="heading{{grade}}" data-bs-parent="#accordionMath">
+                    <div class="accordion-body bg-white">
+                        {% with class_number=forloop.counter %}
+                        {% for category in categories %}
+                            {% if category.grade == class_number %}
+                            <div class="category_link {% block highlight %}{% endblock %}">
+                                <div><a id="sidebar-a-{{ category.id }}" href="{% url 'teach-category' category.id %}" class="nav-link text-dark">
+                                    {% with percent=completed_percent|get_item:category.name %}
+                                    {% if percent == 0 %}
+                                    <i class="fa-solid fa-circle"></i>
+                                    {% elif percent < 20 %}
+                                    <i class="fa-solid fa-pencil me-2"></i>
+                                    {% elif percent < 40 %}
+                                    <i class="fa-solid fa-pen-fancy"></i>
+                                    {% elif percent < 60 %}
+                                    <i class="fa-regular fa-lightbulb"></i>
+                                    {% elif percent < 80 %}
+                                    <i class="fa-solid fa-microchip"></i>
+                                    {% else %}
+                                    <i class="fa-solid fa-crown"></i>
+                                    {% endif %}
+                                    
+                                    {{category.name}}
+                                </a></div>
+                                <div>
+                                    <span id="left-sidebar-percent-{{ category.id }}" class="badge bg-secondary ms-2">{{percent}}%</span>
+                                </div>
+                                    {% endwith %}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Main Content -->
+    <div id="main-content" class="container">
+        <div class="container mt-4">
+            {% if messages %}
+                {% for message in messages%}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% block content %}
+        {% endblock %}
+        </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div id="right-sidebar" class="col-md-2">
+        {% if user.is_authenticated %}
+        <div class="text-center right-sidebar-element">
+            <small class="text-muted">Zalogowano jako</small>
+            <h2>{{ user.username }}</h2>
+        </div>
+        <div class="right-sidebar-element">
+            <h6>Postęp: <span id="percent-over-progress-bar">{{ progress }}%</span></h6>
+            <div class="progress" style="height: 30px; border: 1px solid black; border-radius: 5px; margin-bottom:10px;">
+                <div id="progress-bar" class="progress-bar bg-success" role="progressbar" style="width: {{ progress }}%;" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
+                </div>
+            </div>
+        </div>
+        <div class="right-sidebar-element">
+            <p class="text-center mb-0">Wróć na górę strony</p>
+            <div class="d-flex justify-content-center">
+                <i class="fa-solid fa-up-long" onclick="scrollToTop()"></i>
+            </div>
+        </div>
+        <div class="right-sidebar-element">
+            <h5>Przypięte zadania:</h5>
+            <ul id="hard-exercises">
+                {% for exercise in hard_exercises %}
+                <li id="hard-exercise-{{exercise.id}}">
+                    <i onclick="deleteFromHard({{ exercise.id }})" title="Usuń z przypiętych zadań" class="fa-solid fa-xmark"></i>
+                    <a onclick="goToExercise({{ exercise.id }})" class="text-decoration-none cursor-pointer">{{ exercise }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <div class="text-center">
+            <a href="{% url 'login' %}">Zaloguj się</a>, żeby śledzić postęp.
+        </div>
+        {% endif %}
+    </div>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery  -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/buttons.js' %}"></script>
+    <!-- LaTeX formatting -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,255 @@
+body {
+    padding-top: 60px;
+    display: flex;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+#login-div {
+    width: 400px;
+    margin: auto;
+    margin-top: 10px;
+    border: 2px solid gray;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#main-content {
+    padding-right: 320px;
+}
+
+
+#right-sidebar {
+    position: fixed;
+    top: 54;
+    right: 0;
+    width: 300px;
+    height: 100vh;
+    background-color: #f8f9fa;
+    border-left: 1px solid #ccc;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.right-sidebar-element {
+    padding: 10px;
+    border-bottom: 1px solid gray; 
+}
+
+.sidebar {
+    width: 300px;
+    min-width:300px;
+    float: left;
+    top: 0;
+    left: 0;
+    background-color: #f8f9fa;
+    padding: 15px;
+}
+
+#content {
+    margin-left: 270px;
+    padding: 20px;
+    width: 100%;
+}
+
+.difficulty-level {
+    display: flex;
+    width: 200px;
+    align-items: center;
+}
+
+.difficulty-bars {
+    display: flex;
+    align-items: center;
+    width: 150px;
+}
+
+.level-bar {
+    width: 20px;
+    height: 7px;
+    margin-left: 5px;
+    border: 1px solid gray;
+    border-radius: 2px;
+    background-color: white;
+}
+
+.level-bar.active {
+    background-color: rgb(5, 143, 23);
+}
+
+.nav-link {
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    margin-left: 0;
+}
+
+
+.nav-link:hover .fas {
+    color: #0d6efd; /* Zmiana koloru ikony na niebieski */
+}
+
+.category_link {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.highlight, .highlight:hover {
+    background-color: rgb(255, 121, 43);
+    border-radius: 5px;
+    font-weight: 700;
+    padding: 2px 5px;
+}
+
+.card-body button {
+    color: black;
+    border-color: rgba(0, 0, 0, 0.175);
+}
+
+.card-body button:hover {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.175);
+    border-color: rgba(0, 0, 0, 0.175);
+}
+
+.background-correct {
+    background-color: #9ef1c1;
+    color: black;
+    border: 1px solid #53976f;
+}
+
+.card-body.background-correct {
+    background-color: #e9f8ef;
+    color: #53976f;
+}
+
+.card-body.background-correct button {
+    color: #53976f;
+    border-color: #53976f;
+}
+
+.card-body.background-correct button:hover {
+    background-color:#53976f;
+    border-color: #53976f;
+    color: rgb(255, 236, 223);
+}
+
+.background-incorrect {
+    background-color: #f79d96;
+    color:black;
+    border: 1px solid #b6625c;
+}
+
+.card-body.background-incorrect {
+    background-color: #f8e9e8;
+    color:#b6625c;
+}
+
+.card-body.background-incorrect button {
+    color:#b6625c;
+    border-color: #b6625c;
+}
+
+.card-body.background-incorrect button:hover {
+    background-color:#b6625c;
+    border-color: #b6625c;
+    color: rgb(255, 236, 223);
+}
+
+
+.option-buttons {
+    text-align: right;
+}
+
+.option-buttons i {
+    border: 1px solid rgb(231, 231, 231);
+    border-radius: 2px;
+    padding: 2px 2px;
+}
+
+.option-buttons i:hover {
+    background-color: #c2c2c2;
+    box-shadow: inset 0px 0px 1px 1px;
+}
+
+#total-progress {
+    padding: 0px; 
+    height:18px;
+    width: 50%;
+    background-color:green;
+    border: 1px solid green; 
+    border-radius: 2px;
+    margin: 0px
+}
+
+
+.fa-xmark, .fa-thumbtack, .fa-arrow-rotate-right, .fa-up-long {
+    padding: 2px;
+    margin-top: 3px;
+    margin-left: 5px;
+    border: 1px solid rgb(231, 231, 231);
+}
+
+.fa-xmark:hover, .fa-thumbtack:hover, .fa-arrow-rotate-right:hover, .fa-up-long:hover {
+    background-color: #c2c2c2;
+    box-shadow: inset 0px 0px 1px 1px;
+    cursor: pointer;
+}
+
+#hard-exercises {
+    list-style-type: none;
+    padding-left: 2px;
+}
+
+#hard-exercises li {
+    padding-left: 2px;
+}
+
+.hover-shadow {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.answer-highlight {
+    border-width: 2px;
+    font-weight: 700;
+}
+
+/* Define the wiggling animation */
+@keyframes wiggle {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px); /* Move left */
+    }
+    50% {
+        transform: translateX(5px); /* Move right */
+    }
+    75% {
+        transform: translateX(-5px); /* Move left */
+    }
+    100% {
+        transform: translateX(0); /* Back to original position */
+    }
+}
+
+/* Apply animation to the card when the answer is incorrect */
+.wiggle-animation {
+    animation: wiggle 0.25s ease-in-out; /* Duration of the wiggle */
+}

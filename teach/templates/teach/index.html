@@ -1,0 +1,27 @@
+{% extends 'teach/base.html' %}
+{% load custom_filters %}
+{% block title %}Strona Główna{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    {% for i in "1234" %}
+    <h1 class="mt-5 mb-5 text-center">Klasa {{i}}</h2>
+    <div class="row">
+        {% for category in categories %}
+        {% if category.grade == forloop.parentloop.counter %}
+            <div class="col-md-4 mb-4 d-flex align-items-stretch">
+                <a href="{% url 'teach-category' category.id %}" class="w-100 text-decoration-none">
+                    <div class="card h-100 hover-shadow">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ category.name }}</h5>
+                            <p class="card-text">({{completed_per_category|get_item:category.name}}/{{category.exercise_set.count}})</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

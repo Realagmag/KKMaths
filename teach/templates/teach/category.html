@@ -1,0 +1,100 @@
+{% extends 'teach/base.html' %}
+{% load custom_filters %}
+{% block title %}{{category_name}}{% endblock %}
+
+{% block content %}
+
+    <div class="d-flex justify-content-between">
+        <h1>{{category_name}} {{category}}</h1>
+        <h1 id="percent-over-cards">{{completed_percent|get_item:category_name}}%</h1>
+    </div>
+    <div class="row">
+        {% for exercise in exercises %}
+            {% if exercise.category.name == category_name %}
+            <div id="exercise-card-{{ exercise.id }}" class="col-md-12 mb-4">
+            {% if solved_exercises|get_item:exercise.id == True %}
+                <div class="card border-success">
+            {% elif solved_exercises|get_item:exercise.id == False %}
+                <div class="card border-danger">
+            {% else %}
+                <div class="card">
+            {% endif %}
+                    <div class="card-header d-flex justify-content-between 
+                    {% if solved_exercises|get_item:exercise.id == True %}
+                    background-correct   
+                    {% elif solved_exercises|get_item:exercise.id == False %}
+                    background-incorrect
+                    {% endif %}"> 
+                        <div>
+                            <h5>Zad. {{forloop.counter}}</h5>
+                        </div>
+                        <div class="difficulty-level" title="Poziom: {{exercise.difficulty}}/5">
+                            <span style="text-align:center;">Poziom:</span>
+                            <div class="difficulty-bars">
+                                {% for i in "12345" %}
+                                    <div class="level-bar{% if forloop.counter <= exercise.difficulty %} active{% endif %}"></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body 
+                    {% if solved_exercises|get_item:exercise.id == True %}
+                    background-correct   
+                    {% elif solved_exercises|get_item:exercise.id == False %}
+                    background-incorrect
+                    {% endif %} ">
+                        <div style="display:flex;align-items: flex-start;">
+
+                            <p style="flex: 1;">{{ exercise.description }}</p>
+                            {% if exercise.image %}
+                                <img src="{{ exercise.image.url }}" class="img-fluid" style="mix-blend-mode: multiply;" alt="Image for exercise">
+                            {% endif %}
+                        </div>
+                        <div class="mt-3">
+                            <h6>Odpowiedzi:</h6>
+                            <div class="d-flex">
+                                {% for answer in exercise.answer_set.all %}
+                                    <div class="d-inline w-25 m-1">
+                                        <button 
+                                            id ="answer-{{answer.id}}"
+                                            type="button" 
+                                            class="btn btn-outline-primary h-100 w-100 {% if solved_exercises|get_item:exercise.id == True and answer.correct %}answer-highlight{% endif %}"
+                                            onclick="submitAnswer({{ answer.id }})">
+                                            {{ answer.text }}
+                                        </button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="button-container-{{exercise.id}}" class="option-buttons">
+                    {% if user.is_authenticated %}
+                    {% if exercise in hard_exercises %}
+                        <i onclick="deleteFromHard({{ exercise.id }})" title="Usuń z przypiętych zadań" class="fa-solid fa-xmark"></i>
+                    {% else %}
+                        <i onclick="addToHard({{ exercise.id }})" title="Przypnij zadanie" class="fa-solid fa-thumbtack"></i>
+                    {% endif %}
+                    {% endif %}
+                        <i onclick="resetAnswer({{ exercise.id }})" title="reset" class="fa-solid fa-arrow-rotate-right"></i>
+                </div>
+            </div>
+            {% endif %}
+        {% empty %}
+        Brak dostępnych zadań dla tej kategorii.
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+{% block show_categories %}{% if forloop.counter == category_grade %}show{% endif %}{% endblock %}
+
+{% block button_arrow %}
+    {% if forloop.counter == category_grade %}
+        " aria-expanded="true"
+    {% else %} 
+        collapsed" aria-expanded="false" 
+    {% endif %}
+{% endblock %}
+
+{% block highlight %}{% if category.name == category_name %}highlight{% endif %}{% endblock %}

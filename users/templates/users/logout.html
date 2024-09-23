@@ -1,0 +1,11 @@
+{% extends 'teach/base.html' %}
+
+{% block title %}Wylogowano{% endblock %}
+{% block content %}
+    <h2>Wylogowano Cię!</h2>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            <a class="ml-2" href="{% url 'login' %}"> Zaloguj się </a>
+        </small>
+    </div>
+{% endblock %}
