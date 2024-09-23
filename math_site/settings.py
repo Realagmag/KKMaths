@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://kkmaths-c986f299bb0b.herokuapp.com/']
+ALLOWED_HOSTS = ['kkmaths-c986f299bb0b.herokuapp.com']
 
 
 # Application definition
