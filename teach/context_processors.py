@@ -1,7 +1,36 @@
 from .models import Category, Exercise
+from django.db.models import Case, When
+
+
+# Define the order as a list
+order = ['Liczby Naturalne', 'Liczby Całkowite, Liczby Wymierne',
+         'Liczby Niewymierne', 'Ułamki Dziesiętne', 'Pierwiastek Kwadratowy',
+         'Pierwiastek Sześcienny', 'Potęgi', 'Logarytmy', 'Procenty',
+         'Zbiory', 'Przedziały', 'Wartość Bezwzględna',
+         'Wyrażenia Algebraiczne', 'Wzory Skróconego Mnożenia',
+         'Robieństwo Trójkątów', 'Twierdzenie Talesa', 'Równanie Prostej',
+         'Wzory Skróconego Mnożenia 2', 'Wielomiany', 'Wyrażenia Wymierne', 
+         'Równania i Nierówności 2', 'Układy Równań 2', 'Funkcja Kwadratowa 2',
+         'Optymalizacja', 'Funkcje Trygonometryczne', 'Trójkąty',
+         'Kąty Środkowe i Kąty Wpisane', 'Okrąg Opisany i Okrąg Wpisany',
+         'Twierdzenie Sinusów i Twierdzenie Cosinusów', 'Potęgi 2',
+         'Logarytmy 2', 'Funkcja Wykładnicza', 'Funkcja Logarytmiczna', 
+         'Ciągi', 'Ciąg Arytmetyczny', 'Ciąg Geometryczny', 
+         'Odległości na Płaszczyźnie', 'Równanie Okręgu',
+         'Wzajemne Położenie Prostej i Okręgu', 'Symetrie', 'Statystyka',
+         'Reguły Mnożenia i Dodawania', 'Permutacje i Wariacje', 'Prawdopodobieństwo',
+         'Wartość Oczekiwana', 'Graniastosłupy', 'Ostrosłupy', 'Kąty w Stereometrii',
+         'Bryły Obrotowe']
+
 
 def base_template_context(request):
-    categories = Category.objects.all()
+    categories = Category.objects.filter(name__in=order).annotate(
+    order=Case(
+        *[When(name=cat_name, then=order.index(cat_name)) for cat_name in order],
+        default=len(order)  # Items not in the list will be ordered last
+    )
+    ).order_by('order')
+
     grades = ['One', 'Two', 'Three', 'Four']
     solved_exercises = request.session.get('solved_exercises', {})
     exercises = Exercise.objects.all()
