@@ -40,7 +40,7 @@ def check_answer(request, answer_id):
 
 def get_exercises_for_category(request, category_id):
     category = Category.objects.get(id=category_id)
-    exercises = category.exercise_set.all()
+    exercises = category.exercise_set.all().order_by('difficulty')
     context = {
         "category_name": category.name,
         "exercises": exercises,
