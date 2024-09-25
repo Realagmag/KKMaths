@@ -3,12 +3,9 @@ window.onload = function() {
     if (hash) {
         const exerciseCard = document.querySelector(hash);
         if (exerciseCard) {
-            // Scroll to the element smoothly
             exerciseCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-            // Calculate offset to center the element in the viewport
             const offset = (window.innerHeight - exerciseCard.getBoundingClientRect().height) / 2;
-            window.scrollBy(0, -offset); // Adjust the scroll position
+            window.scrollBy(0, -offset);
         }
     }
 };
@@ -30,7 +27,6 @@ function deleteFromHard(exerciseId) {
         },
         success: function(response) {
             if (response.status === 'deleted') {
-                console.log('Exercise deleted from pinned successfully:', exerciseId);
 
                 // remove exercise from list of hard exercises
                 $('#hard-exercise-' + exerciseId).remove();
@@ -64,9 +60,7 @@ function addToHard(exerciseId){
         },
         success: function(response) {
             if (response.status === 'added') {
-                console.log('Exercise added to pinned successfully:', exerciseId);
 
-                {/* <a onclick="goToExercise({{ exercise.id }})" class="text-decoration-none cursor-pointer">{{ exercise }}</a> */}
                 // add exercise to list of hard exercises
                 var ul = document.getElementById('hard-exercises');
                 var li = document.createElement('li');
@@ -95,7 +89,7 @@ function addToHard(exerciseId){
             }
         },
         error: function(xhr, status, error) {
-            console.error('Error deleting exercise:', error);
+            console.error('Error while adding exercise:', error);
         }
     });
 }
@@ -118,7 +112,6 @@ function resetAnswer(exerciseId){
         },
         success: function(response) {
             if (response.status === 'reset') {
-                console.log('Info about exercise reseted successfully:', exerciseId);
 
                 clearColorsFromCard(exerciseId);
                 updateProgress(response);
@@ -139,7 +132,6 @@ function submitAnswer(answerId){
         },
         success: function(response) {
             var exerciseId = response.exercise_id;
-            console.log('Info about exercise updated successfully:', exerciseId);
 
             var container = document.getElementById('exercise-card-' + exerciseId);
             clearColorsFromCard(exerciseId);

@@ -1,7 +1,6 @@
 from .models import Category, Exercise
 from django.db.models import Case, When
 
-
 # Define the order as a list
 order = ['Liczby Naturalne', 'Liczby Całkowite, Liczby Wymierne',
          'Liczby Niewymierne', 'Ułamki Dziesiętne', 'Pierwiastek Kwadratowy',
@@ -26,12 +25,12 @@ order = ['Liczby Naturalne', 'Liczby Całkowite, Liczby Wymierne',
 
 
 def base_template_context(request):
+    # Ordering by "order" list
     categories = Category.objects.filter(name__in=order).annotate(
     order=Case(
         *[When(name=cat_name, then=order.index(cat_name)) for cat_name in order],
-        default=len(order)  # Items not in the list will be ordered last
-    )
-    ).order_by('order')
+        default=len(order)
+    )).order_by('order')
 
     grades = ['One', 'Two', 'Three', 'Four']
     solved_exercises = request.session.get('solved_exercises', {})
@@ -73,6 +72,7 @@ def base_template_context(request):
         'hard_exercises': hard_exercises,
         'completed_per_category': completed_count_in_category,
     }
+
     
 def exercise_modification_context(request, exercise_id):
     exercises = Exercise.objects.all()
@@ -100,10 +100,10 @@ def calculate_total_progress(exercises, solved_exercises):
             points += exercise.difficulty
     return int(points/max_points * 100) if max_points != 0 else 0
 
+
 def get_completed_exercises_ids(solved_exercises):
     completed_exercises = []    
     for id in solved_exercises.keys():
         if solved_exercises.get(id) == True:
             completed_exercises.append(id)
     return completed_exercises
-

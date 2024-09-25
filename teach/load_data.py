@@ -5,9 +5,8 @@ import random
 def load_db():
     with open('teach/duzy_plik.csv', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile, delimiter=";")
-        headers = next(reader)
+        next(reader)
         for row in reader:
-            
             answers_correct_dict = {}
             for i in range(len(row)):
                 if i == 0:

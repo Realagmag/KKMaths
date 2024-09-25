@@ -1,9 +1,8 @@
-from django.shortcuts import render, redirect
 from .forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
-from teach.models import Solved
+from django.shortcuts import render, redirect
 
 def register(request):
     if request.method == "POST":
@@ -16,13 +15,13 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
+
 def user_logout(request):
     if request.user.is_authenticated:
-        
-        
         logout(request)
         return render(request, 'users/logout.html')
     return redirect(request, 'teach-home')
+
 
 class UserLoginView(LoginView):
     def form_valid(self, form):
@@ -32,5 +31,4 @@ class UserLoginView(LoginView):
         solved_objects = user.solved_set.all()
         self.request.session['solved_exercises'] = {solved.exercise.id : solved.correct  for solved in solved_objects}
         self.request.session.modified = True
-
         return response
