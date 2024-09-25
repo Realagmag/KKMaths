@@ -1,11 +1,11 @@
-Strona co dodać:
-- Ulepszyć podświetlanie na zielono lub czerwono zrobionych zadań
-- Dodać timer niepozwalający na ponowne wysłanie odpowiedzi przez 10 sekund
-- oznacz zadanie jako niezrobione (jest usuwane ze statystyk i znika zabarwienie)
-- oznacz zadanie do zrobienia na korkach (dla zalogowanych)
-- progress bar dla kategorii i globalny
-- timer ile czasu osoba już się uczy
-- wykres aktywności w przeszłości(jak wykres commitów na githubie) ile zadań którego dnia zrobione
-- tryb prowadzenia za rączkę - pokazuje tylko jedno zadanie na raz, najpierw te najłatwiejsze i z wyjaśnieniami.
-- przycisk "pokaż odpowiedzi" i może limitowany czas na odpowiedź po pokazaniu odpowiedzi?
-test
+This project is a website with math exercises for my students.  
+Can be found under https://kkmaths-c986f299bb0b.herokuapp.com
+
+
+**Technology**
+
+Backend is fully written using Django 5.1. Templates are generated using Django Template Language with some features coded using JavaScript. Database used is PostreSQL.
+
+**Web Connection**
+
+Server is hosted on Heroku and stores images using AWS S3.
