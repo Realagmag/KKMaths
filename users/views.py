@@ -4,23 +4,24 @@ from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 
+
 def register(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, f'Konto zostało utworzone!')
-            return redirect('login')
+            messages.success(request, f"Konto zostało utworzone!")
+            return redirect("login")
     else:
         form = UserRegisterForm()
-    return render(request, 'users/register.html', {'form': form})
+    return render(request, "users/register.html", {"form": form})
 
 
 def user_logout(request):
     if request.user.is_authenticated:
         logout(request)
-        return render(request, 'users/logout.html')
-    return redirect(request, 'teach-home')
+        return render(request, "users/logout.html")
+    return redirect(request, "teach-home")
 
 
 class UserLoginView(LoginView):
@@ -29,6 +30,8 @@ class UserLoginView(LoginView):
 
         user = self.request.user
         solved_objects = user.solved_set.all()
-        self.request.session['solved_exercises'] = {solved.exercise.id : solved.correct  for solved in solved_objects}
+        self.request.session["solved_exercises"] = {
+            solved.exercise.id: solved.correct for solved in solved_objects
+        }
         self.request.session.modified = True
         return response

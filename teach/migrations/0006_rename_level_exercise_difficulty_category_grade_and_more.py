@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('teach', '0005_category_exercise_level_alter_exercise_category'),
+        ("teach", "0005_category_exercise_level_alter_exercise_category"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='exercise',
-            old_name='level',
-            new_name='difficulty',
+            model_name="exercise",
+            old_name="level",
+            new_name="difficulty",
         ),
         migrations.AddField(
-            model_name='category',
-            name='grade',
+            model_name="category",
+            name="grade",
             field=models.IntegerField(default=1),
         ),
         migrations.AddField(
-            model_name='exercise',
-            name='class_profile',
-            field=models.CharField(default='podstawa', max_length=64),
+            model_name="exercise",
+            name="class_profile",
+            field=models.CharField(default="podstawa", max_length=64),
         ),
     ]

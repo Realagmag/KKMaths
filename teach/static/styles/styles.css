@@ -87,7 +87,7 @@ body {
 
 
 .nav-link:hover .fas {
-    color: #0d6efd; /* Zmiana koloru ikony na niebieski */
+    color: #0d6efd;
 }
 
 .category_link {

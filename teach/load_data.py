@@ -2,8 +2,9 @@ from teach import models
 import csv
 import random
 
+
 def load_db():
-    with open('teach/duzy_plik.csv', encoding='utf-8') as csvfile:
+    with open("teach/duzy_plik.csv", encoding="utf-8") as csvfile:
         reader = csv.reader(csvfile, delimiter=";")
         next(reader)
         for row in reader:
@@ -19,12 +20,18 @@ def load_db():
                     answers_correct_dict[row[i]] = True
                 else:
                     answers_correct_dict[row[i]] = False
-                    
-            exercise = models.Exercise.objects.create(category=category, description=text, difficulty=difficulty, class_profile="podstawa")
+
+            exercise = models.Exercise.objects.create(
+                category=category,
+                description=text,
+                difficulty=difficulty,
+                class_profile="podstawa",
+            )
             answers = list(answers_correct_dict.keys())
             random.shuffle(answers)
             for i in range(len(answers)):
-                models.Answer.objects.create(text=answers[i], exercise=exercise, correct=answers_correct_dict.get(answers[i]))
-            
-                
-
+                models.Answer.objects.create(
+                    text=answers[i],
+                    exercise=exercise,
+                    correct=answers_correct_dict.get(answers[i]),
+                )
