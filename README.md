@@ -8,7 +8,7 @@ Backend is fully written using Django 5.1. Templates are generated using Django 
 
 Server is hosted on Heroku and stores images using AWS S3.
 
-Temporarly offline due to high maintanance cost.
+Temporarily offline due to high maintenance cost.
 
 Video presenting website:
 https://youtu.be/mRdoiUY2Rus
